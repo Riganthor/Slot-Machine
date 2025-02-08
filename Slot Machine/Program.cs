@@ -33,7 +33,7 @@
 
             if (money >= THREE_LINES_MONEY)
             {
-                Console.WriteLine("We have the following game modes: \n1. Center line, \n2. All horizontal lines, \n3. All columns, \n4. Diagonals.\n" 
+                Console.WriteLine("We have the following game modes: \n1. Center line, \n2. All horizontal lines, \n3. All columns, \n4. Diagonals.\n", 
                     "Please select a game mode by entering the number infront of the game mode.");
                 playerChoice = int.Parse(Console.ReadLine());
             }
@@ -87,17 +87,17 @@
             while (money > 0 && !gameOver)
             {
                 // Deduct money based on player's choice
-                if (playerChoice == "one")
+                if (playerChoice == centerLine)
                 {
                     money--; 
                 }
-                else if (playerChoice == "three" && money >= THREE_LINES_MONEY)
+                else if (playerChoice != centerLine && money >= THREE_LINES_MONEY)
                 {
                     money -= THREE_LINES_MONEY; 
                 }
 
                 //-------------------------------Check for Wins-------------------------------------
-                if (playerChoice == "one")
+                if (playerChoice == centerLine)
                 {
                     // Check if any column has matching numbers
                     for (int j = 0; j < gridColumns; j++)
@@ -116,7 +116,7 @@
                         Console.WriteLine("No winning column found. Try again!");
                     }
                 }
-                else if (playerChoice == "three")
+                else
                 {
                     // Check for 3 matching numbers in rows, columns, or diagonals
                     bool threeLineWin = false;
