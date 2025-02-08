@@ -18,24 +18,28 @@
             int gridColumns = 3;
             bool playerWins = false;
             bool gameOver = false;
-            string playerChoice = "";
+            int playerChoice = 1;
             int money = 0;
+            int centerLine = 1;
+
 
             Random rng = new Random();
 
             //--------------------------------------User Input-----------------------------------------------
+
             Console.WriteLine("Welcome to the C# casino. \nThe prices are one coin for one line or three for three lines.");
             Console.WriteLine("Please insert money:");
             money = int.Parse(Console.ReadLine());
 
             if (money >= THREE_LINES_MONEY)
             {
-                Console.WriteLine("Do you want to play for one line? Type 'one' or three lines? Type 'three'.");
-                playerChoice = Console.ReadLine().ToLower();
+                Console.WriteLine("We have the following game modes: \n1. Center line, \n2. All horizontal lines, \n3. All columns, \n4. Diagonals.\n" 
+                    "Please select a game mode by entering the number infront of the game mode.");
+                playerChoice = int.Parse(Console.ReadLine());
             }
             else
             {
-                playerChoice = "one"; // Default to "one" if not enough money
+                playerChoice = centerLine ; // Default to "centerLine" if not enough money
             }
 
             //-------------------------------create the grid-------------------------------------
