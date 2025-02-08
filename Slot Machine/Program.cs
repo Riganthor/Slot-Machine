@@ -4,8 +4,7 @@
     {
         static void Main(string[] args)
         {
-            int GRID_ROWS = 3;
-            int GRID_COLUMNS = 3;
+            
             int COLUMN_ONE = 0;
             int COLUMN_TWO = 1;
             int COLUMN_THREE = 2;
@@ -15,53 +14,14 @@
             int THREE_LINES_MONEY = 3;
             int NO_MONEY = 0;
 
+            int gridRows = 3;
+            int gridColumns = 3;
             bool playerWins = false;
             bool gameOver = false;
             string playerChoice = "";
             int money = 0;
 
             Random rng = new Random();
-
-            //-------------------------------create the grid-------------------------------------
-            int[,] grid = new int[GRID_ROWS, GRID_COLUMNS];
-
-            //-------------------------------Create the grid values-----------------------------
-            for (int i = 0; i < GRID_ROWS; i++)
-            {
-                for (int j = 0; j < GRID_COLUMNS; j++)
-                {
-                    grid[i, j] = rng.Next(0, 3); // Random number between 0 and 2
-                }
-            }
-
-            //-------------------------------Draw the grid-------------------------------------
-            // Draw the top border of the grid
-            Console.Write("+");
-            for (int j = 0; j < GRID_COLUMNS; j++)
-            {
-                Console.Write("---+");
-            }
-            Console.WriteLine();
-
-            // Draw the rows with cells
-            for (int i = 0; i < GRID_ROWS; i++)
-            {
-                Console.Write("|");
-                for (int j = 0; j < GRID_COLUMNS; j++)
-                {
-                    // Display the grid values inside the cells
-                    Console.Write($" {grid[i, j]} |"); // Use the numbers in the grid array
-                }
-                Console.WriteLine();
-
-                // Draw separator between rows
-                Console.Write("+");
-                for (int j = 0; j < GRID_COLUMNS; j++)
-                {
-                    Console.Write("---+");
-                }
-                Console.WriteLine();
-            }
 
             //--------------------------------------User Input-----------------------------------------------
             Console.WriteLine("Welcome to the C# casino. \nThe prices are one coin for one line or three for three lines.");
@@ -76,6 +36,47 @@
             else
             {
                 playerChoice = "one"; // Default to "one" if not enough money
+            }
+
+            //-------------------------------create the grid-------------------------------------
+            int[,] grid = new int[gridRows, gridColumns];
+
+            //-------------------------------Create the grid values-----------------------------
+            for (int i = 0; i < gridRows; i++)
+            {
+                for (int j = 0; j < gridColumns; j++)
+                {
+                    grid[i, j] = rng.Next(0, 3); // Random number between 0 and 2
+                }
+            }
+
+            //-------------------------------Draw the grid-------------------------------------
+            // Draw the top border of the grid
+            Console.Write("+");
+            for (int j = 0; j < gridColumns; j++)
+            {
+                Console.Write("---+");
+            }
+            Console.WriteLine();
+
+            // Draw the rows with cells
+            for (int i = 0; i < gridRows; i++)
+            {
+                Console.Write("|");
+                for (int j = 0; j < gridColumns; j++)
+                {
+                    // Display the grid values inside the cells
+                    Console.Write($" {grid[i, j]} |"); // Use the numbers in the grid array
+                }
+                Console.WriteLine();
+
+                // Draw separator between rows
+                Console.Write("+");
+                for (int j = 0; j < gridColumns; j++)
+                {
+                    Console.Write("---+");
+                }
+                Console.WriteLine();
             }
 
             //----------------------------------------Game Logic-----------------------------------------
@@ -95,7 +96,7 @@
                 if (playerChoice == "one")
                 {
                     // Check if any column has matching numbers
-                    for (int j = 0; j < GRID_COLUMNS; j++)
+                    for (int j = 0; j < gridColumns; j++)
                     {
                         if (grid[COLUMN_ONE, j] == grid[COLUMN_TWO, j] && grid[COLUMN_TWO, j] == grid[COLUMN_THREE, j])
                         {
@@ -117,7 +118,7 @@
                     bool threeLineWin = false;
 
                     // Check rows
-                    for (int i = 0; i < GRID_ROWS; i++)
+                    for (int i = 0; i < gridRows; i++)
                     {
                         if (grid[i, GRID_ROW_ONE] == grid[i, GRID_ROW_TWO] && grid[i, GRID_ROW_TWO] == grid[i, GRID_ROW_THREE])
                         {
@@ -129,7 +130,7 @@
                     }
 
                     // Check columns
-                    for (int j = 0; j < GRID_COLUMNS; j++)
+                    for (int j = 0; j < gridColumns; j++)
                     {
                         if (grid[COLUMN_ONE, j] == grid[COLUMN_TWO, j] && grid[COLUMN_TWO, j] == grid[COLUMN_THREE, j])
                         {
