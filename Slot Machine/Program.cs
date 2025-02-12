@@ -11,8 +11,9 @@ namespace _Slot_Machines
             const int GRID_ROW_TWO = 1;
             const int THREE_LINES_MONEY = 3;
             const int NO_MONEY = 0;
-            const int ALL_HORIZONTAL_LINES = 2;
             const int COLUMN = 0;
+            const int ALL_HORIZONTAL_LINES = 2;
+            const int CENTERLINE = 1;
             const int ALL_COLUMNS = 3;
             const int DIAGONALS = 4;
 
@@ -22,7 +23,7 @@ namespace _Slot_Machines
             bool gameOver = false;
             int playerChoice = 1;
             int money = 0;
-            int centerLine = 1;
+            
             int winning = 0;
             int comparisonNumber = 0;
 
@@ -43,7 +44,7 @@ namespace _Slot_Machines
             }
             else
             {
-                playerChoice = centerLine; // Default to "centerLine" if not enough money
+                playerChoice = CENTERLINE; // Default to "centerLine" if not enough money
             }
 
             //-------------------------------create the grid-------------------------------------
@@ -91,17 +92,17 @@ namespace _Slot_Machines
             while (money > NO_MONEY && !gameOver)
             {
                 // Deduct money based on player's choice
-                if (playerChoice == centerLine)
+                if (playerChoice == CENTERLINE)
                 {
                     money--;
                 }
-                else if (playerChoice != centerLine && money >= THREE_LINES_MONEY)
+                else if (playerChoice != CENTERLINE && money >= THREE_LINES_MONEY)
                 {
                     money -= THREE_LINES_MONEY;
                 }
 
                 //-------------------------------Check for Wins-------------------------------------
-                if (playerChoice == centerLine)
+                if (playerChoice == CENTERLINE)
                 {
                     // Check if middle row has matching numbers
                     for (int j = 0; j < gridRows; j++)
