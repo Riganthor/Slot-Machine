@@ -168,25 +168,84 @@ namespace _Slot_Machines
                 }
                 if (playerChoice == ALL_COLUMNS)
                 {
+                    bool columnWin = false;
 
+                    // Check for 3 matching numbers in each column
+                    for (int j = 0; j < gridColumns; j++)
+                    {
+                        bool isWinningColumn = true;
+
+                        // Check if all elements in the current column are the same
+                        for (int i = 1; i < gridRows; i++)
+                        {
+                            if (grid[i, j] != grid[i - 1, j]) // If any element is different in the column, it's not a winning column
+                            {
+                                isWinningColumn = false;
+                                break;
+                            }
+                        }
+
+                        // If the column has all matching elements
+                        if (isWinningColumn)
+                        {
+                            columnWin = true;
+                            Console.WriteLine($"You win! Column {j + 1} has all the same numbers.");
+                            money += THREE_LINES_MONEY;  // Add winnings for the 3-column win
+                        }
+                    }
+
+                    if (!columnWin)
+                    {
+                        Console.WriteLine("No winning column found. Try again!");
+                    }
                 }
 
                 if (playerChoice == DIAGONALS)
                 {
-                // Check diagonals
-                if ((grid[COLUMN_ONE, GRID_ROW_ONE] == grid[COLUMN_TWO, GRID_ROW_TWO] && grid[COLUMN_TWO, GRID_ROW_TWO] == grid[COLUMN_THREE, GRID_ROW_THREE]) ||
-                        (grid[COLUMN_ONE, GRID_ROW_THREE] == grid[COLUMN_TWO, GRID_ROW_TWO] && grid[COLUMN_TWO, GRID_ROW_TWO] == grid[COLUMN_THREE, GRID_ROW_ONE]))
-                {
-                    threeLineWin = true;
-                    Console.WriteLine("You win! Diagonal has all the same numbers.");
-                }
+                    bool diagonalWin = false;
 
-                if (!threeLineWin)
-                {
-                    Console.WriteLine("No winning line found for three lines. Try again!");
+                    // Check top-left to bottom-right diagonal
+                    bool isWinningDiagonal1 = true;
+                    for (int i = 1; i < gridRows; i++)
+                    {
+                        if (grid[i, i] != grid[i - 1, i - 1])
+                        {
+                            isWinningDiagonal1 = false;
+                            break;
+                        }
+                    }
+
+                    if (isWinningDiagonal1)
+                    {
+                        diagonalWin = true;
+                        Console.WriteLine("You win! Top-left to bottom-right diagonal has all the same numbers.");
+                        money += THREE_LINES_MONEY;  // Add winnings for the diagonal win
+                    }
+
+                    // Check top-right to bottom-left diagonal
+                    bool isWinningDiagonal2 = true;
+                    for (int i = 1; i < gridRows; i++)
+                    {
+                        if (grid[i, gridColumns - 1 - i] != grid[i - 1, gridColumns - 2 - i])
+                        {
+                            isWinningDiagonal2 = false;
+                            break;
+                        }
+                    }
+
+                    if (isWinningDiagonal2)
+                    {
+                        diagonalWin = true;
+                        Console.WriteLine("You win! Top-right to bottom-left diagonal has all the same numbers.");
+                        money += THREE_LINES_MONEY;  // Add winnings for the diagonal win
+                    }
+
+                    if (!diagonalWin)
+                    {
+                        Console.WriteLine("No winning diagonal found. Try again!");
+                    }
                 }
             }
-        }
 
             //----------------------------------------Game Over Check--------------------------------
             if (money == NO_MONEY)
