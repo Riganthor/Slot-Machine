@@ -17,6 +17,8 @@ namespace _Slot_Machines
             int NO_MONEY = 0;
             int ALL_HORIZONTAL_LINES = 2;
             int COLUMN = 0;
+            int ALL_COLUMNS = 3;
+            int DIAGONALS = 4;
 
             int gridRows = 3;
             int gridColumns = 3;
@@ -109,7 +111,7 @@ namespace _Slot_Machines
                     for (int j = 0; j < gridRows; j++)
                     {
                         int ROW = 1;
-                        
+
                         comparisonNumber = grid[ROW, COLUMN];
 
                         if (grid[ROW, j] == comparisonNumber)
@@ -130,45 +132,50 @@ namespace _Slot_Machines
                 {
                     Console.WriteLine("No winning column found. Try again!");
                 }
-            }
-            if (playerChoice == ALL_HORIZONTAL_LINES)
-            {
-                bool threeLineWin = false;
-
-                // Check for 3 matching numbers in each row
-                for (int i = 0; i < gridRows; i++)
+            
+                if (playerChoice == ALL_HORIZONTAL_LINES)
                 {
-                    bool isWinningRow = true;
+                    bool threeLineWin = false;
 
-                    // Check if all elements in the current row are the same
-                    for (int j = GRID_ROW_TWO; j < gridColumns; j++)
+                    // Check for 3 matching numbers in each row
+                    for (int i = 0; i < gridRows; i++)
                     {
-                        if (grid[i, j] != grid[i, j - GRID_ROW_TWO]) // If any element is different in the row, it's not a winning row
+                        bool isWinningRow = true;
+
+                        // Check if all elements in the current row are the same
+                        for (int j = GRID_ROW_TWO; j < gridColumns; j++)
                         {
-                            isWinningRow = false;
-                            break;
+                            if (grid[i, j] != grid[i, j - GRID_ROW_TWO]) // If any element is different in the row, it's not a winning row
+                            {
+                                isWinningRow = false;
+                                break;
+                            }
+                        }
+
+                        // If the row has all matching elements
+                        if (isWinningRow)
+                        {
+                            threeLineWin = true;
+                            Console.WriteLine($"You win! Row {i + GRID_ROW_TWO} has all the same numbers.");
+                            money += THREE_LINES_MONEY;  // Add winnings for the 3-line win
                         }
                     }
 
-                    // If the row has all matching elements
-                    if (isWinningRow)
+                    if (!threeLineWin)
                     {
-                        threeLineWin = true;
-                        Console.WriteLine($"You win! Row {i + GRID_ROW_TWO} has all the same numbers.");
-                        money += THREE_LINES_MONEY;  // Add winnings for the 3-line win
+                        Console.WriteLine("No winning row found. Try again!");
                     }
                 }
-
-                if (!threeLineWin)
+                if (playerChoice == ALL_COLUMNS)
                 {
-                    Console.WriteLine("No winning row found. Try again!");
+
                 }
-            }
 
-
-            // Check diagonals
-            if ((grid[COLUMN_ONE, GRID_ROW_ONE] == grid[COLUMN_TWO, GRID_ROW_TWO] && grid[COLUMN_TWO, GRID_ROW_TWO] == grid[COLUMN_THREE, GRID_ROW_THREE]) ||
-                    (grid[COLUMN_ONE, GRID_ROW_THREE] == grid[COLUMN_TWO, GRID_ROW_TWO] && grid[COLUMN_TWO, GRID_ROW_TWO] == grid[COLUMN_THREE, GRID_ROW_ONE]))
+                if (playerChoice == DIAGONALS)
+                {
+                // Check diagonals
+                if ((grid[COLUMN_ONE, GRID_ROW_ONE] == grid[COLUMN_TWO, GRID_ROW_TWO] && grid[COLUMN_TWO, GRID_ROW_TWO] == grid[COLUMN_THREE, GRID_ROW_THREE]) ||
+                        (grid[COLUMN_ONE, GRID_ROW_THREE] == grid[COLUMN_TWO, GRID_ROW_TWO] && grid[COLUMN_TWO, GRID_ROW_TWO] == grid[COLUMN_THREE, GRID_ROW_ONE]))
                 {
                     threeLineWin = true;
                     Console.WriteLine("You win! Diagonal has all the same numbers.");
@@ -179,6 +186,7 @@ namespace _Slot_Machines
                     Console.WriteLine("No winning line found for three lines. Try again!");
                 }
             }
+        }
 
             //----------------------------------------Game Over Check--------------------------------
             if (money == NO_MONEY)
@@ -204,6 +212,7 @@ namespace _Slot_Machines
         }
      }
 }
+
     
 
 
