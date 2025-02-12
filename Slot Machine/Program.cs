@@ -7,18 +7,14 @@ namespace _Slot_Machines
         static void Main(string[] args)
         {
 
-            int COLUMN_ONE = 0;
-            int COLUMN_TWO = 1;
-            int COLUMN_THREE = 2;
-            int GRID_ROW_ONE = 0;
-            int GRID_ROW_TWO = 1;
-            int GRID_ROW_THREE = 2;
-            int THREE_LINES_MONEY = 3;
-            int NO_MONEY = 0;
-            int ALL_HORIZONTAL_LINES = 2;
-            int COLUMN = 0;
-            int ALL_COLUMNS = 3;
-            int DIAGONALS = 4;
+            const int COLUMN_TWO = 1;
+            const int GRID_ROW_TWO = 1;
+            const int THREE_LINES_MONEY = 3;
+            const int NO_MONEY = 0;
+            const int ALL_HORIZONTAL_LINES = 2;
+            const int COLUMN = 0;
+            const int ALL_COLUMNS = 3;
+            const int DIAGONALS = 4;
 
             int gridRows = 3;
             int gridColumns = 3;
