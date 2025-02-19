@@ -250,7 +250,7 @@ namespace _Slot_Machines
                 gameOver = true;
                 Console.WriteLine("Game Over! You have no money left.");
             }
-            else if (!playerWins)
+            else
             {
                 // Allow the player to play again
                 Console.WriteLine("Would you like to play again? (y/n)");
