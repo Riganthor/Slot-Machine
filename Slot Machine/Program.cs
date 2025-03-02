@@ -96,6 +96,10 @@ namespace _Slot_Machines
                     Console.WriteLine($"You have {money} coins left.");
                     Console.WriteLine("Would you like to play again? (y/n)");
                     string replayChoice = Console.ReadLine().ToLower();
+                    if (replayChoice == "y" )
+                        if ( money < THREE_LINES_COST )
+                            playerChoice = CENTERLINE;
+
                     if (replayChoice != "y")
                         gameOver = true;
                 }
