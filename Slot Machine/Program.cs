@@ -18,8 +18,22 @@ namespace _Slot_Machines
             int money = 0;
             int playerChoice = CENTERLINE;
             bool gameOver = false;
+            int playerChoice = 0;
 
             Random rng = new Random();
+
+            static int playerChoices()
+            {
+                Console.WriteLine("We have the following game modes: ");
+                Console.WriteLine("1. Center line");
+                Console.WriteLine("2. All horizontal lines");
+                Console.WriteLine("3. All columns");
+                Console.WriteLine("4. Diagonals");
+                Console.WriteLine("Please select a game mode (1-4):");
+
+                // Get player choice and return it
+                return int.Parse(Console.ReadLine());
+            }
 
             // User Input
             Console.WriteLine("Welcome to the C# casino!");
@@ -29,13 +43,7 @@ namespace _Slot_Machines
 
             if (money >= THREE_LINES_COST)
             {
-                Console.WriteLine("We have the following game modes: ");
-                Console.WriteLine("1. Center line");
-                Console.WriteLine("2. All horizontal lines");
-                Console.WriteLine("3. All columns");
-                Console.WriteLine("4. Diagonals");
-                Console.WriteLine("Please select a game mode (1-4):");
-                playerChoice = int.Parse(Console.ReadLine());
+                playerChoices();
             }
             else
             {
@@ -96,9 +104,11 @@ namespace _Slot_Machines
                     Console.WriteLine($"You have {money} coins left.");
                     Console.WriteLine("Would you like to play again? (y/n)");
                     string replayChoice = Console.ReadLine().ToLower();
-                    if (replayChoice == "y" )
-                        if ( money < THREE_LINES_COST )
+                    if (replayChoice == "y")
+                        if (money < THREE_LINES_COST)
                             playerChoice = CENTERLINE;
+                        else
+                            playerChoices();
 
                     if (replayChoice != "y")
                         gameOver = true;
