@@ -16,9 +16,8 @@ namespace _Slot_Machines
             const int DIAGONALS = 4;
 
             int money = 0;
-            int playerChoice = CENTERLINE;
+            int playerChoice = CENTERLINE;  // Declare this only once
             bool gameOver = false;
-            int playerChoice = 0;
 
             Random rng = new Random();
 
@@ -43,7 +42,7 @@ namespace _Slot_Machines
 
             if (money >= THREE_LINES_COST)
             {
-                playerChoices();
+                playerChoice = playerChoices();  // Store the result into playerChoice
             }
             else
             {
@@ -105,10 +104,12 @@ namespace _Slot_Machines
                     Console.WriteLine("Would you like to play again? (y/n)");
                     string replayChoice = Console.ReadLine().ToLower();
                     if (replayChoice == "y")
+                    {
                         if (money < THREE_LINES_COST)
                             playerChoice = CENTERLINE;
                         else
-                            playerChoices();
+                            playerChoice = playerChoices(); // Update playerChoice if they can afford it
+                    }
 
                     if (replayChoice != "y")
                         gameOver = true;
