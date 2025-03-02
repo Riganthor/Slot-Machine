@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 
 namespace _Slot_Machines
 {
@@ -6,269 +6,173 @@ namespace _Slot_Machines
     {
         static void Main(string[] args)
         {
-
-            const int COLUMN_TWO = 1;
-            const int GRID_ROW_TWO = 1;
-            const int THREE_LINES_MONEY = 3;
+            const int ONE_LINE_COST = 1;
+            const int THREE_LINES_COST = 3;
+            const int GRID_SIZE = 3;
             const int NO_MONEY = 0;
-            const int COLUMN = 0;
-            const int ALL_HORIZONTAL_LINES = 2;
             const int CENTERLINE = 1;
+            const int ALL_HORIZONTAL_LINES = 2;
             const int ALL_COLUMNS = 3;
             const int DIAGONALS = 4;
 
-            int gridRows = 3;
-            int gridColumns = 3;
-            bool playerWins = false;
-            bool gameOver = false;
-            int playerChoice = 1;
             int money = 0;
-            
-            int winning = 0;
-            int comparisonNumber = 0;
-
+            int playerChoice = CENTERLINE;
+            bool gameOver = false;
 
             Random rng = new Random();
 
-            //--------------------------------------User Input-----------------------------------------------
-
-            Console.WriteLine("Welcome to the C# casino. \nThe prices are one coin for one line or three for three lines.");
+            // User Input
+            Console.WriteLine("Welcome to the C# casino!");
+            Console.WriteLine("The price is 1 coin for 1 line or 3 for 3 lines.");
             Console.WriteLine("Please insert money:");
             money = int.Parse(Console.ReadLine());
 
-            if (money >= THREE_LINES_MONEY)
+            if (money >= THREE_LINES_COST)
             {
-                Console.WriteLine("We have the following game modes: \n1. Center line, \n2. All horizontal lines, \n3. All columns, \n4. Diagonals.\n",
-                    "Please select a game mode by entering the number infront of the game mode.");
+                Console.WriteLine("We have the following game modes: ");
+                Console.WriteLine("1. Center line");
+                Console.WriteLine("2. All horizontal lines");
+                Console.WriteLine("3. All columns");
+                Console.WriteLine("4. Diagonals");
+                Console.WriteLine("Please select a game mode (1-4):");
                 playerChoice = int.Parse(Console.ReadLine());
             }
             else
             {
-                playerChoice = CENTERLINE; // Default to "centerLine" if not enough money
+                playerChoice = CENTERLINE; // Default to center line if not enough money
             }
 
-            //-------------------------------create the grid-------------------------------------
-            int[,] grid = new int[gridRows, gridColumns];
-
-            //-------------------------------Create the grid values-----------------------------
-            for (int i = 0; i < gridRows; i++)
-            {
-                for (int j = 0; j < gridColumns; j++)
-                {
-                    grid[i, j] = rng.Next(0, 3); // Random number between 0 and 2
-                }
-            }
-
-            //-------------------------------Draw the grid-------------------------------------
-            // Draw the top border of the grid
-            Console.Write("+");
-            for (int j = 0; j < gridColumns; j++)
-            {
-                Console.Write("---+");
-            }
-            Console.WriteLine();
-
-            // Draw the rows with cells
-            for (int i = 0; i < gridRows; i++)
-            {
-                Console.Write("|");
-                for (int j = 0; j < gridColumns; j++)
-                {
-                    // Display the grid values inside the cells
-                    Console.Write($" {grid[i, j]} |"); // Use the numbers in the grid array
-                }
-                Console.WriteLine();
-
-                // Draw separator between rows
-                Console.Write("+");
-                for (int j = 0; j < gridColumns; j++)
-                {
-                    Console.Write("---+");
-                }
-                Console.WriteLine();
-            }
-
-            //----------------------------------------Game Logic-----------------------------------------
             while (money > NO_MONEY && !gameOver)
             {
-                // Deduct money based on player's choice
+                // Create the grid and fill it with random numbers (0, 1, or 2)
+                int[,] grid = new int[GRID_SIZE, GRID_SIZE];
+                for (int i = 0; i < GRID_SIZE; i++)
+                {
+                    for (int j = 0; j < GRID_SIZE; j++)
+                    {
+                        grid[i, j] = rng.Next(0, 3);
+                    }
+                }
+
+                // Display the grid
+                DisplayGrid(grid);
+
+                // Deduct money based on the player's choice
                 if (playerChoice == CENTERLINE)
-                {
-                    money--;
-                }
-                else if (playerChoice != CENTERLINE && money >= THREE_LINES_MONEY)
-                {
-                    money -= THREE_LINES_MONEY;
-                }
+                    money -= ONE_LINE_COST;
+                else if (playerChoice == ALL_HORIZONTAL_LINES || playerChoice == ALL_COLUMNS || playerChoice == DIAGONALS)
+                    money -= THREE_LINES_COST;
 
-                //-------------------------------Check for Wins-------------------------------------
+                // Check for winning condition based on player's choice
+                bool playerWins = false;
                 if (playerChoice == CENTERLINE)
+                    playerWins = CheckCenterLineWin(grid);
+                else if (playerChoice == ALL_HORIZONTAL_LINES)
+                    playerWins = CheckHorizontalLinesWin(grid);
+                else if (playerChoice == ALL_COLUMNS)
+                    playerWins = CheckColumnsWin(grid);
+                else if (playerChoice == DIAGONALS)
+                    playerWins = CheckDiagonalsWin(grid);
+
+                // Feedback to player
+                if (playerWins)
                 {
-                    // Check if middle row has matching numbers
-                    for (int j = 0; j < gridRows; j++)
-                    {
-                        int ROW = 1;
-
-                        comparisonNumber = grid[ROW, COLUMN];
-
-                        if (grid[ROW, j] == comparisonNumber)
-                        {
-                            winning++;
-
-                            if (winning == gridColumns)
-
-                                playerWins = true;
-                            Console.WriteLine($"You win! Column {j + COLUMN_TWO} has all the same numbers.");
-                            money++;
-                            break;
-                        }
-                    }
-                }
-
-                if (!playerWins)
-                {
-                    Console.WriteLine("No winning column found. Try again!");
-                }
-            
-                if (playerChoice == ALL_HORIZONTAL_LINES)
-                {
-                    bool threeLineWin = false;
-
-                    // Check for 3 matching numbers in each row
-                    for (int i = 0; i < gridRows; i++)
-                    {
-                        bool isWinningRow = true;
-
-                        // Check if all elements in the current row are the same
-                        for (int j = GRID_ROW_TWO; j < gridColumns; j++)
-                        {
-                            if (grid[i, j] != grid[i, j - GRID_ROW_TWO]) // If any element is different in the row, it's not a winning row
-                            {
-                                isWinningRow = false;
-                                break;
-                            }
-                        }
-
-                        // If the row has all matching elements
-                        if (isWinningRow)
-                        {
-                            threeLineWin = true;
-                            Console.WriteLine($"You win! Row {i + GRID_ROW_TWO} has all the same numbers.");
-                            money += THREE_LINES_MONEY;  // Add winnings for the 3-line win
-                        }
-                    }
-
-                    if (!threeLineWin)
-                    {
-                        Console.WriteLine("No winning row found. Try again!");
-                    }
-                }
-                if (playerChoice == ALL_COLUMNS)
-                {
-                    bool columnWin = false;
-
-                    // Check for 3 matching numbers in each column
-                    for (int j = 0; j < gridColumns; j++)
-                    {
-                        bool isWinningColumn = true;
-
-                        // Check if all elements in the current column are the same
-                        for (int i = 1; i < gridRows; i++)
-                        {
-                            if (grid[i, j] != grid[i - 1, j]) // If any element is different in the column, it's not a winning column
-                            {
-                                isWinningColumn = false;
-                                break;
-                            }
-                        }
-
-                        // If the column has all matching elements
-                        if (isWinningColumn)
-                        {
-                            columnWin = true;
-                            Console.WriteLine($"You win! Column {j + 1} has all the same numbers.");
-                            money += THREE_LINES_MONEY;  // Add winnings for the 3-column win
-                        }
-                    }
-
-                    if (!columnWin)
-                    {
-                        Console.WriteLine("No winning column found. Try again!");
-                    }
-                }
-
-                if (playerChoice == DIAGONALS)
-                {
-                    bool diagonalWin = false;
-
-                    // Check top-left to bottom-right diagonal
-                    bool isWinningDiagonal1 = true;
-                    for (int i = 1; i < gridRows; i++)
-                    {
-                        if (grid[i, i] != grid[i - 1, i - 1])
-                        {
-                            isWinningDiagonal1 = false;
-                            break;
-                        }
-                    }
-
-                    if (isWinningDiagonal1)
-                    {
-                        diagonalWin = true;
-                        Console.WriteLine("You win! Top-left to bottom-right diagonal has all the same numbers.");
-                        money += THREE_LINES_MONEY;  // Add winnings for the diagonal win
-                    }
-
-                    // Check top-right to bottom-left diagonal
-                    bool isWinningDiagonal2 = true;
-                    for (int i = 1; i < gridRows; i++)
-                    {
-                        if (grid[i, gridColumns - 1 - i] != grid[i - 1, gridColumns - 2 - i])
-                        {
-                            isWinningDiagonal2 = false;
-                            break;
-                        }
-                    }
-
-                    if (isWinningDiagonal2)
-                    {
-                        diagonalWin = true;
-                        Console.WriteLine("You win! Top-right to bottom-left diagonal has all the same numbers.");
-                        money += THREE_LINES_MONEY;  // Add winnings for the diagonal win
-                    }
-
-                    if (!diagonalWin)
-                    {
-                        Console.WriteLine("No winning diagonal found. Try again!");
-                    }
-                }
-            }
-
-            //----------------------------------------Game Over Check--------------------------------
-            if (money == NO_MONEY)
-            {
-                gameOver = true;
-                Console.WriteLine("Game Over! You have no money left.");
-            }
-            else
-            {
-                // Allow the player to play again
-                Console.WriteLine("Would you like to play again? (y/n)");
-                string replayChoice = Console.ReadLine().ToLower();
-
-                if (replayChoice == "y")
-                {
-                    playerWins = false; // Reset win condition for next spin
+                    Console.WriteLine("You win! Your money increases.");
+                    money += THREE_LINES_COST;
                 }
                 else
                 {
-                    gameOver = true; // End the game
+                    Console.WriteLine("No win this round. Try again!");
+                }
+
+                // Check if player has money left
+                if (money == NO_MONEY)
+                {
+                    gameOver = true;
+                    Console.WriteLine("Game Over! You have no money left.");
+                }
+                else
+                {
+                    Console.WriteLine($"You have {money} coins left.");
+                    Console.WriteLine("Would you like to play again? (y/n)");
+                    string replayChoice = Console.ReadLine().ToLower();
+                    if (replayChoice != "y")
+                        gameOver = true;
                 }
             }
         }
-     }
+
+        // Function to display the grid
+        static void DisplayGrid(int[,] grid)
+        {
+            Console.WriteLine("+---+---+---+");
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    Console.Write($"| {grid[i, j]} ");
+                }
+                Console.WriteLine("|");
+                Console.WriteLine("+---+---+---+");
+            }
+        }
+
+        // Check if center line (row 1) has matching numbers
+        static bool CheckCenterLineWin(int[,] grid)
+        {
+            int comparisonValue = grid[1, 0];
+            for (int i = 1; i < grid.GetLength(1); i++)
+            {
+                if (grid[1, i] != comparisonValue)
+                    return false;
+            }
+            return true;
+        }
+
+        // Check if all rows have matching numbers
+        static bool CheckHorizontalLinesWin(int[,] grid)
+        {
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                int comparisonValue = grid[i, 0];
+                for (int j = 1; j < grid.GetLength(1); j++)
+                {
+                    if (grid[i, j] != comparisonValue)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        // Check if all columns have matching numbers
+        static bool CheckColumnsWin(int[,] grid)
+        {
+            for (int i = 0; i < grid.GetLength(1); i++)
+            {
+                int comparisonValue = grid[0, i];
+                for (int j = 1; j < grid.GetLength(0); j++)
+                {
+                    if (grid[j, i] != comparisonValue)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        // Check if any diagonal has matching numbers
+        static bool CheckDiagonalsWin(int[,] grid)
+        {
+            bool topLeftToBottomRight = true;
+            bool topRightToBottomLeft = true;
+            for (int i = 1; i < grid.GetLength(0); i++)
+            {
+                if (grid[i, i] != grid[i - 1, i - 1])
+                    topLeftToBottomRight = false;
+                if (grid[i, grid.GetLength(1) - 1 - i] != grid[i - 1, grid.GetLength(1) - i])
+                    topRightToBottomLeft = false;
+            }
+
+            return topLeftToBottomRight || topRightToBottomLeft;
+        }
+    }
 }
-
-    
-
-
