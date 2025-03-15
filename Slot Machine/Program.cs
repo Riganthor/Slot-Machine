@@ -23,6 +23,9 @@ namespace _Slot_Machines
 
             static int playerChoices()
             {
+                int choice = 0;
+                bool validChoice = false;
+
                 Console.WriteLine("We have the following game modes: ");
                 Console.WriteLine("1. Center line");
                 Console.WriteLine("2. All horizontal lines");
@@ -30,8 +33,31 @@ namespace _Slot_Machines
                 Console.WriteLine("4. Diagonals");
                 Console.WriteLine("Please select a game mode (1-4):");
 
-                // Get player choice and return it
-                return int.Parse(Console.ReadLine());
+                // Continue asking for input until a valid choice is made
+                while (!validChoice)
+                {
+                    string input = Console.ReadLine();
+
+                    // Try to parse the input to an integer
+                    if (int.TryParse(input, out choice))
+                    {
+                        // Check if the choice is within the valid range (1-4)
+                        if (choice >= 1 && choice <= 4)
+                        {
+                            validChoice = true;  // Exit loop if the choice is valid
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please select a valid game mode between 1 and 4.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+                    }
+                }
+
+                return choice;
             }
 
             // User Input
