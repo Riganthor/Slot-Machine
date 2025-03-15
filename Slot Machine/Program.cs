@@ -8,7 +8,6 @@ namespace _Slot_Machines
         {
             const int ONE_LINE_COST = 1;
             const int THREE_LINES_COST = 3;
-            const int GRID_SIZE = 3;
             const int NO_MONEY = 0;
             const int CENTERLINE = 1;
             const int ALL_HORIZONTAL_LINES = 2;
@@ -19,6 +18,7 @@ namespace _Slot_Machines
             int money = 0;
             int playerChoice = CENTERLINE;  // Declare this only once
             bool gameOver = false;
+            int gridSize = 3;  // Default grid size (3x3, but could be changed to 5x5, 7x7, etc.)
 
             Random rng = new Random();
 
@@ -79,10 +79,10 @@ namespace _Slot_Machines
             while (money > NO_MONEY && !gameOver)
             {
                 // Create the grid and fill it with random numbers (0, 1, or 2)
-                int[,] grid = new int[GRID_SIZE, GRID_SIZE];
-                for (int i = 0; i < GRID_SIZE; i++)
+                int[,] grid = new int[gridSize, gridSize];
+                for (int i = 0; i < gridSize; i++)
                 {
-                    for (int j = 0; j < GRID_SIZE; j++)
+                    for (int j = 0; j < gridSize; j++)
                     {
                         grid[i, j] = rng.Next(0, 3);
                     }
@@ -100,7 +100,7 @@ namespace _Slot_Machines
                 // Check for winning condition based on player's choice
                 bool playerWins = false;
                 if (playerChoice == CENTERLINE)
-                    playerWins = CheckCenterLineWin(grid);
+                    playerWins = CheckCenterLineWin(grid, gridSize);
                 else if (playerChoice == ALL_HORIZONTAL_LINES)
                     playerWins = CheckHorizontalLinesWin(grid);
                 else if (playerChoice == ALL_COLUMNS)
@@ -159,13 +159,14 @@ namespace _Slot_Machines
             }
         }
 
-        // Check if center line (row 1) has matching numbers
-        static bool CheckCenterLineWin(int[,] grid)
+        // Check if center line (row GRID_SIZE / 2) has matching numbers
+        static bool CheckCenterLineWin(int[,] grid, int gridSize)
         {
-            int comparisonValue = grid[1, 0];
+            int centerLineIndex = gridSize / 2;  // Calculate center line index dynamically
+            int comparisonValue = grid[centerLineIndex, 0];
             for (int i = 1; i < grid.GetLength(1); i++)
             {
-                if (grid[1, i] != comparisonValue)
+                if (grid[centerLineIndex, i] != comparisonValue)
                     return false;
             }
             return true;
