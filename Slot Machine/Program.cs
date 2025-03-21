@@ -14,11 +14,12 @@ namespace _Slot_Machines
             const int ALL_COLUMNS = 3;
             const int DIAGONALS = 4;
             const string REPLAY = "y";
+            const int GRIDSIZE = 3; // Default grid size (3x3, but could be changed to 5x5, 7x7, etc.)
 
             int money = 0;
             int playerChoice = CENTERLINE;  // Declare this only once
             bool gameOver = false;
-            int gridSize = 3;  // Default grid size (3x3, but could be changed to 5x5, 7x7, etc.)
+              
 
             Random rng = new Random();
 
@@ -79,10 +80,10 @@ namespace _Slot_Machines
             while (money > NO_MONEY && !gameOver)
             {
                 // Create the grid and fill it with random numbers (0, 1, or 2)
-                int[,] grid = new int[gridSize, gridSize];
-                for (int i = 0; i < gridSize; i++)
+                int[,] grid = new int[GRIDSIZE, GRIDSIZE];
+                for (int i = 0; i < GRIDSIZE; i++)
                 {
-                    for (int j = 0; j < gridSize; j++)
+                    for (int j = 0; j < GRIDSIZE; j++)
                     {
                         grid[i, j] = rng.Next(0, 3);
                     }
@@ -100,7 +101,7 @@ namespace _Slot_Machines
                 // Check for winning condition based on player's choice
                 bool playerWins = false;
                 if (playerChoice == CENTERLINE)
-                    playerWins = CheckCenterLineWin(grid, gridSize);
+                    playerWins = CheckCenterLineWin(grid, GRIDSIZE);
                 else if (playerChoice == ALL_HORIZONTAL_LINES)
                     playerWins = CheckHorizontalLinesWin(grid);
                 else if (playerChoice == ALL_COLUMNS)
