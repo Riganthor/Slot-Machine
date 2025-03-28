@@ -29,10 +29,10 @@ namespace _Slot_Machines
                 bool validChoice = false;
 
                 Console.WriteLine("We have the following game modes: ");
-                Console.WriteLine("1. Center line");
-                Console.WriteLine("2. All horizontal lines");
-                Console.WriteLine("3. All columns");
-                Console.WriteLine("4. Diagonals");
+                Console.WriteLine($"{CENTERLINE}. Center line");
+                Console.WriteLine($"{ALL_HORIZONTAL_LINES}. All horizontal lines");
+                Console.WriteLine($"{ALL_COLUMNS}. All columns");
+                Console.WriteLine($"{DIAGONALS}. Diagonals");
                 Console.WriteLine("Please select a game mode (1-4):");
 
                 // Continue asking for input until a valid choice is made
